@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow" />
+<style type="text/css">
+body { font-family:helvetica,arial,sans-serif; line-height:1.4; }
+a { text-decoration:none; color:#059c8c; font-weight:600; }
+pre { background-color:#d9e5ec; width:90%; }
+td { background-color:#d9e5ec; }
+code { font-size:larger; white-space:nowrap; }
+h1 { font-size:x-large; }
+h2 { font-size:large; }
+h3 { font-size:medium; }
+</style>
+<title>Aufgabe 7 Systemprogrammierung</title>
+</head>
+<body>
+
+<h1>Systemprogrammierung - AIN/2<br>
+<span style="font-size:smaller">Sommersemester 2023</span></h1>
+<hr>
+
+<h2>
+&Uuml;bungsaufgabe 7: POSIX-Funktionen</h2>
+<p>
+<b>Abgabe bis 29./30.6.2023</b></p>
+
+<br>
+
+<h3>Programmierung</h3>
+<ul>
+<li>
+<p>
+Erstellen Sie ein C-Programm <u><code>filesize</code></u>,
+das als Kommandozeilenargumente beliebig viele Dateinamen erwartet
+und f&uuml;r jede der Dateien die Gr&ouml;&szlig;e in Byte
+auf die Standardausgabe schreibt.</p>
+<p>
+Bei einem Aufruf ohne Kommandozeilenargumente soll das Programm mit der 
+POSIX-Funktion <code>read</code> byteweise von der Standardeingabe lesen 
+und dabei die Anzahl der Bytes z&auml;hlen.
+Andernfalls soll das Programm f&uuml;r die angegebenen Dateien zur 
+Gr&ouml;&szlig;enbestimmung die POSIX-Funktion <code>stat</code> verwenden.
+Siehe <code>man&nbsp;2&nbsp;read</code> und <code>man&nbsp;2&nbsp;stat</code> 
+oder die POSIX-Dokumentation im Internet.
+Achten Sie auf eine korrekte Fehlerbehandlung mit Ausgabe der
+zugeh&ouml;rigen Systemmeldung.
+Damit die Systemmeldung in der auf dem Rechner (bzw. der beim Aufruf
+verwendeten Konsole) eingestellten Sprache erscheint,
+m&uuml;ssen Sie am Anfang des Programms folgenden Aufruf einf&uuml;gen
+(siehe auch <code>man&nbsp;3&nbsp;setlocale</code>):</p>
+<pre>
+  setlocale(LC_ALL, "");
+</pre>
+<p>
+<em>
+Hinweise:<br>
+Verwenden Sie das Vorlesungsbeispiel <code>count.c</code> als Vorlage.
+Ersetzen Sie im Fall der Standardeingabe den C-Bibliotheksaufruf 
+<code>fgetc</code> durch den Aufruf der POSIX-Funktion <code>read</code> und 
+bei Dateien die ganze Lese-/Z&auml;hl-Schleife durch den Aufruf der 
+POSIX-Funktion <code>stat</code>. Den C-Bibliotheksaufruf <code>fopen</code> 
+brauchen Sie nicht mehr (Warum?).
+Beachten Sie au&szlig;erdem, dass POSIX f&uuml;r ganzahlige Datentypen in der
+Regel Aliasnamen verwendet. Ihr Programm muss damit richtig umgehen.</em></p>
+</li>
+<li>
+<p>
+Erstellen Sie ein C-Programm <u><code>filecopy</code></u>,
+das als Kommandozeilenargumente zwei Dateinamen erwartet
+und die erstgenannte Datei in die zweitgenannte kopiert.</p>
+<p>
+Das Programm soll zur Gr&ouml;&szlig;enbestimmung die POSIX-Funktion
+<code>fstat</code> verwenden, daraufhin mit <code>malloc</code> einen Puffer in
+Dateigr&ouml;&szlig;e allokieren, die Quelldatei mit einem einzigen Aufruf 
+der POSIX-Funktion <code>read</code> in den Puffer kopieren und 
+schlie&szlig;lich den Puffer mit einem einzigen Aufruf der POSIX-Funktion 
+<code>write</code> in die Zieldatei schreiben 
+(siehe <code>man&nbsp;2&nbsp;fstat</code>,
+<code>man&nbsp;2&nbsp;read</code>, <code>man&nbsp;2&nbsp;write</code>
+oder die POSIX-Dokumentation im Internet).</p>
+<p>
+Achten Sie auf eine korrekte und vollst&auml;ndige Fehlerbehandlung
+mit f&uuml;r den Benutzer aussagekr&auml;ftigen Fehlermeldungen.
+Stellen Sie f&uuml;r die Systemmeldungen die deutsche Sprache ein,
+um ein sprachliches Durcheinander zwischen Systemmeldungen und eigenen
+Fehlertexten zu vermeiden:</p>
+<pre>
+  setlocale(LC_MESSAGES, "de_DE.UTF-8");
+</pre>
+<p>
+Geben Sie eine Warnung aus, wenn die Plattform die deutschen Systemmeldungen
+nicht unterst&uuml;tzt.</p>
+<p>
+<em>
+Hinweise:<br>
+Verwenden Sie das Vorlesungsbeispiel <code>copy.c</code> als Vorlage und
+ersetzen Sie die byteweise Kopierschleife durch die genannten Aufrufe von 
+POSIX-Funktionen.<br>
+Beachten Sie auch hier, dass die POSIX-Funktionen mit Aliasnamen f&uuml;r 
+ganzzahlige Datentypen definiert sind. Ihr Programm muss damit richtig 
+umgehen.</em></p>
+</li>
+<li>
+<p>
+Erstellen Sie ein m&ouml;glichst einfaches <u><code>Makefile</code></u>,
+das die beiden Programme baut und die gewohnten Stilregeln einh&auml;lt.
+Sie d&uuml;rfen die eingebauten Variablen und Musterregeln von make verwenden
+(d.h. <code>make&nbsp;-R</code> braucht nicht zu funktionieren).</p>
+</li>
+<li>
+Pr&uuml;fen Sie Ihre beiden Programme mit
+<code>cppcheck --enable=warning,style --std=c11</code>
+und mit <code>valgrind</code> auf Probleme.
+</li>
+</ul>
+
+<br>
+
+<h3>Test</h3>
+<p>
+Vergleichen Sie die Ausgaben Ihres Programms <code>filesize</code>
+mit denen des Linux-Kommandos <code>ls</code>:</p>
+<pre>
+  ./filesize xxx *
+  ls -l xxx *
+</pre>
+<p><em>
+Hinweise:<br>
+Statt <code>xxx</code> k&ouml;nnen Sie auch einen anderen Dateinamen verwenden,
+der im aktuellen Arbeitsverzeichnis nicht vorkommt.<br>
+Der <code>*</code> ist das sogenannte Wildcard-Symbol und wird von der Shell
+durch alle Dateinamen des aktuellen Arbeitsverzeichnisses ersetzt.</em></p>
+<p>
+Kommt f&uuml;r die nicht existierende Datei <code>xxx</code>
+die gleiche Fehlermeldung?<br>
+In welcher Sprache erscheint die Systemmeldung?</p>
+<p>
+Die aktuellen Spracheinstellungen k&ouml;nnen Sie in der Konsole
+mit dem Linux-Kommando <code>locale</code> abfragen
+(siehe <code>man&nbsp;1&nbsp;locale)</code>).
+Mit der Option <code>-a</code> zeigt das Kommando statt der Einstellungen
+die verf&uuml;gbaren Locales an. &Auml;ndern Sie mal die Einstellung
+f&uuml;r die Systemmeldungen wie folgt:</p>
+<pre>
+  export LC_MESSAGES=C
+</pre>
+<p>
+In welcher Sprache erscheinen jetzt die Fehlermeldungen von
+<code>filesize</code> und <code>ls</code>?</p>
+<p>
+Testen Sie, ob Ihr Programm <code>filecopy</code>
+Dateien wirklich vollst&auml;ndig kopiert:</p>
+<pre>
+  ./filecopy filecopy.c filecopy-kopie.c
+  diff filecopy.c filecopy-kopie.c
+</pre>
+<p>
+Wie verh&auml;lt sich <code>filecopy</code>,<br>
+wenn die Quelldatei nicht existiert?<br>
+wenn Sie kein Leserecht auf der Quelldatei haben?<br>
+wenn die Zieldatei bereits existiert?<br>
+wenn Sie kein Schreibrecht im Zielverzeichnis haben?</p>
+<p>
+Arbeiten Sie auf der lokalen Festplatte, damit Sie die Rechte Ihrer Dateien
+und Verzeichnisse beliebig manipulieren d&uuml;rfen:</p>
+<pre>
+  cd
+  mkdir tmp
+  cd tmp
+</pre>
+<p>
+Kopieren Sie Ihre im Rahmen von Aufgabe&nbsp;7 erstellten Dateien in das
+neue Verzeichnis <code>tmp</code> und sehen Sie sich die Zugriffsrechte
+der Dateien an:</p>
+<pre>
+  ls -l
+</pre>
+<p><em>
+Hinweise:<br>
+Bei jeder Linux-Datei gibt es die Rechte <code>r</code> f&uuml;r Lesen,
+<code>w</code> f&uuml;r Schreiben und <code>x</code> f&uuml;r Ausf&uuml;hren
+(gew&ouml;hnliche Dateien) bzw. Durchsuchen (Verzeichnisse).
+Die Rechte gibt es jeweils drei Mal, f&uuml;r den Eigent&uuml;mer,
+die Gruppe des Eigent&uuml;mers und f&uuml;r sonstige Benutzer.
+Bei Kommandos und Funktionen werden die Rechte &uuml;brigens statt mit den
+Buchstaben oft oktal kodiert angegeben. Wie das funktioniert, k&ouml;nnen Sie
+z.B. im Wikipedia-Artikel Unix-Dateirechte nachlesen.
+</em></p>
+<p>
+Ihr Leserecht auf einer Datei entfernen bzw. setzen Sie mit dem Kommando</p>
+<pre>
+  chmod -r <em>Datei</em>
+  chmod +r <em>Datei</em>
+</pre>
+<p>
+Ihr Schreibrecht auf einem Verzeichnis entfernen bzw. setzen Sie mit dem
+Kommando</p>
+<pre>
+  chmod -w <em>Verzeichnis</em>
+  chmod +w <em>Verzeichnis</em>
+</pre>
+
+<br>
+
+<h3>Protokoll</h3>
+<p>
+Erstellen Sie ein Protokoll Ihrer Tests. Gehen sie dazu so vor wie in
+<a href="../Aufgabe1/Aufgabe1.html">Aufgabe&nbsp;1</a> beschrieben.
+Nennen Sie die Protokolldatei <code>protokoll-aufgabe7.txt</code>
+und erg&auml;nzen Sie darin Ihre Antworten auf alle im Testabschnitt 
+gestellten Fragen.</p>
+
+<br>
+
+<h3>Abgabe</h3>
+<!--
+<p>
+Verpacken Sie alle Dateien Ihrer L&ouml;sung in ein Archiv:</p>
+<pre>
+    tar cvzf aufgabe7.tar.gz Makefile filesize.c filecopy.c protokoll-aufgabe7.txt
+</pre>
+<p>
+Laden Sie das Archiv dann in Moodle hoch (siehe dort).</p>
+-->
+<p>
+F&uuml;hren Sie Ihre beiden Programme und das Testprotokoll vor.</p>
+<p>
+<em>
+Hinweis:<br>
+Der Compiler <code>gcc</code> darf f&uuml;r Ihre Programme keine Fehler 
+oder Warnungen mehr ausgeben.<br>
+Ihre Programme m&uuml;ssen au&szlig;erdem ordentlich formatiert sein.
+Bessern Sie die Formatierung gegebenenfalls mit <code>astyle</code> nach:<br>
+<code>&nbsp;&nbsp;astyle -p -H --style=ansi filesize.c filecopy.c</code></em></p>
+
+<br>
+
+<hr>
+<address style="font-size:smaller; text-align:left; float:left;">
+<a href="http://www-home.htwg-konstanz.de/~drachen/">Prof. Dr. H. Drachenfels</a>
+<br>
+<a href="https://www.htwg-konstanz.de">Hochschule Konstanz</a> -
+<a href="https://www.htwg-konstanz.de/info/impressum">Impressum</a> -
+<a href="https://www.htwg-konstanz.de/info/datenschutzerklaerung/">Datenschutzerkl&auml;rung</a>
+</address>
+<em style="font-size:smaller; text-align:right; float:right;">
+Letzte &Auml;nderung: 14.6.2023
+</em>
+
+</body>
+</html>

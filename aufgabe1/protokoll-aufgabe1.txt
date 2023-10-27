@@ -1,0 +1,84 @@
+  fabian  ~    SysProg  aufgabe1  make clean
+rm -f aufgabe1 aufgabe1.o
+  fabian  ~    SysProg  aufgabe1  make
+gcc -g -fno-stack-protector -Wwrite-strings -Wall -Wextra -Werror -std=c11 -pedantic    aufgabe1.c   -o aufgabe1
+  fabian  ~    SysProg  aufgabe1  ./aufgabe1
+Adresse: 0x7fff02c0240c, Platzbedarf: 4, Typ: int, Name: i, Wert: 12
+Adresse: 0x7fff02c02400, Platzbedarf: 8, Typ: long, Name: l, Wert: 13
+Adresse: 0x7fff02c023f8, Platzbedarf: 8, Typ: long long, Name: ll, Wert: 14
+Adresse: 0x7fff02c023f6, Platzbedarf: 2, Typ: short, Name: s, Wert: 11
+Adresse: 0x7fff02c023f5, Platzbedarf: 1, Typ: char, Name: c, Wert: 118
+Adresse: 0x7fff02c023f4, Platzbedarf: 1, Typ: signed char, Name: sc, Wert: -12
+Adresse: 0x7fff02c023f3, Platzbedarf: 1, Typ: unsigned char, Name: uc, Wert: 12
+Adresse: 0x7fff02c023ec, Platzbedarf: 4, Typ: float, Name: f, Wert: 1.500000
+Adresse: 0x7fff02c023e0, Platzbedarf: 8, Typ: double, Name: d, Wert: 1.600000
+Adresse: 0x7fff02c023d0, Platzbedarf: 16, Typ: long double, Name: ld, Wert: 1.700000
+Adresse: 0x7fff02c023cc, Platzbedarf: 4, Typ: unsigned int, Name: ui, Wert: 12
+Adresse: 0x7fff02c023c0, Platzbedarf: 8, Typ: unsigned long, Name: ul, Wert: 13
+Adresse: 0x7fff02c023b8, Platzbedarf: 8, Typ: unsigned long long, Name: ull, Wert: 14
+Adresse: 0x7fff02c023b6, Platzbedarf: 2, Typ: unsigned short, Name: us, Wert: 1
+Adresse: 0x7fff02c023b5, Platzbedarf: 1, Typ: bool, Name: b, Wert: 1
+Adresse: 0x7fff02c023a8, Platzbedarf: 8, Typ: const char*, Name: st, Wert: Hallo
+
+LP64 Modell
+  fabian  ~    SysProg  aufgabe1  ./aufgabe1 | sort
+
+Adresse: 0x7ffeb8b263a8, Platzbedarf: 8, Typ: const char*, Name: st, Wert: Hallo
+Adresse: 0x7ffeb8b263b5, Platzbedarf: 1, Typ: bool, Name: b, Wert: 1
+Adresse: 0x7ffeb8b263b6, Platzbedarf: 2, Typ: unsigned short, Name: us, Wert: 1
+Adresse: 0x7ffeb8b263b8, Platzbedarf: 8, Typ: unsigned long long, Name: ull, Wert: 14
+Adresse: 0x7ffeb8b263c0, Platzbedarf: 8, Typ: unsigned long, Name: ul, Wert: 13
+Adresse: 0x7ffeb8b263cc, Platzbedarf: 4, Typ: unsigned int, Name: ui, Wert: 12
+Adresse: 0x7ffeb8b263d0, Platzbedarf: 16, Typ: long double, Name: ld, Wert: 1.700000
+Adresse: 0x7ffeb8b263e0, Platzbedarf: 8, Typ: double, Name: d, Wert: 1.600000
+Adresse: 0x7ffeb8b263ec, Platzbedarf: 4, Typ: float, Name: f, Wert: 1.500000
+Adresse: 0x7ffeb8b263f3, Platzbedarf: 1, Typ: unsigned char, Name: uc, Wert: 12
+Adresse: 0x7ffeb8b263f4, Platzbedarf: 1, Typ: signed char, Name: sc, Wert: -12
+Adresse: 0x7ffeb8b263f5, Platzbedarf: 1, Typ: char, Name: c, Wert: 118
+Adresse: 0x7ffeb8b263f6, Platzbedarf: 2, Typ: short, Name: s, Wert: 11
+Adresse: 0x7ffeb8b263f8, Platzbedarf: 8, Typ: long long, Name: ll, Wert: 14
+Adresse: 0x7ffeb8b26400, Platzbedarf: 8, Typ: long, Name: l, Wert: 13
+Adresse: 0x7ffeb8b2640c, Platzbedarf: 4, Typ: int, Name: i, Wert: 12
+LP64 Modell
+  fabian  ~    SysProg  aufgabe1  ./aufgabe1 | sort -r
+LP64 Modell
+Adresse: 0x7ffe95a6b58c, Platzbedarf: 4, Typ: int, Name: i, Wert: 12
+Adresse: 0x7ffe95a6b580, Platzbedarf: 8, Typ: long, Name: l, Wert: 13
+Adresse: 0x7ffe95a6b578, Platzbedarf: 8, Typ: long long, Name: ll, Wert: 14
+Adresse: 0x7ffe95a6b576, Platzbedarf: 2, Typ: short, Name: s, Wert: 11
+Adresse: 0x7ffe95a6b575, Platzbedarf: 1, Typ: char, Name: c, Wert: 118
+Adresse: 0x7ffe95a6b574, Platzbedarf: 1, Typ: signed char, Name: sc, Wert: -12
+Adresse: 0x7ffe95a6b573, Platzbedarf: 1, Typ: unsigned char, Name: uc, Wert: 12
+Adresse: 0x7ffe95a6b56c, Platzbedarf: 4, Typ: float, Name: f, Wert: 1.500000
+Adresse: 0x7ffe95a6b560, Platzbedarf: 8, Typ: double, Name: d, Wert: 1.600000
+Adresse: 0x7ffe95a6b550, Platzbedarf: 16, Typ: long double, Name: ld, Wert: 1.700000
+Adresse: 0x7ffe95a6b54c, Platzbedarf: 4, Typ: unsigned int, Name: ui, Wert: 12
+Adresse: 0x7ffe95a6b540, Platzbedarf: 8, Typ: unsigned long, Name: ul, Wert: 13
+Adresse: 0x7ffe95a6b538, Platzbedarf: 8, Typ: unsigned long long, Name: ull, Wert: 14
+Adresse: 0x7ffe95a6b536, Platzbedarf: 2, Typ: unsigned short, Name: us, Wert: 1
+Adresse: 0x7ffe95a6b535, Platzbedarf: 1, Typ: bool, Name: b, Wert: 1
+Adresse: 0x7ffe95a6b528, Platzbedarf: 8, Typ: const char*, Name: st, Wert: Hallo
+
+  fabian  ~    SysProg  aufgabe1  make cppcheck
+cppcheck --enable=warning,style --std=c11 aufgabe1.c
+Checking aufgabe1.c ...
+aufgabe1.c:48:26: warning: Logical conjunction always evaluates to false: sizeof(int) == 4 && sizeof(long) == 4. [incorrectLogicOperator]
+    if (sizeof(int) == 4 && sizeof(long) == 4 && sizeof(char*) == 4)
+                         ^
+aufgabe1.c:56:31: warning: Logical conjunction always evaluates to false: sizeof(int) == 4 && sizeof(long) == 4. [incorrectLogicOperator]
+    else if (sizeof(int) == 4 && sizeof(long) == 4 && sizeof(long long) == 8 && sizeof(char*) == 8)
+                              ^
+Active checkers: 106/565
+  fabian  ~    SysProg  aufgabe1 
+
+
+
+Sind die Variablen in der Reihenfolge ihrer Definition im Hauptspeicher abgelegt?
+    Ja, nur von Oben nach Unten.
+
+Liegen die Variablen direkt hintereinander oder gibt es Lücken? Falls es Lücken gibt, wo liegen sie? Können Sie sich erklären, warum es eventuell Lücken gibt?
+    Ja, es gibt Lücken. Nach dem char[], double, float und den beiden long int. 
+
+Wie viel Speicher belegen die Variablen insgesamt, also inklusive eventueller Lücken?
+    Laut Python:    >>> 0x7ffe95a6b58c - 0x7ffe95a6b528
+                    100 + 4 (die erste)

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow" />
+<style type="text/css">
+body { font-family:helvetica,arial,sans-serif; line-height:1.4; }
+a { text-decoration:none; color:#059c8c; font-weight:600; }
+pre { background-color:#d9e5ec; width:90%; }
+code { font-size:larger; white-space:nowrap; }
+h1 { font-size:x-large; }
+h2 { font-size:large; }
+h3 { font-size:medium; }
+</style>
+<title>Aufgabe 3 Systemprogrammierung</title>
+</head>
+<body>
+
+<h1>Systemprogrammierung - AIN/2<br>
+<span style="font-size:smaller">Sommersemester 2023</span></h1>
+<hr>
+
+<h2>&Uuml;bungsaufgabe 3: C Strings und Funktionen</h2>
+<p>
+<b>Abgabe bis 4./5.5.2023</b></p>
+
+<h3>Migration von Java nach C: Stringsort</h3>
+<p>
+Das Java-Programm <a href="Stringsort.java" download>&cudarrr;&nbsp;Stringsort.java</a>
+erzeugt zuf&auml;llige Ziffernstrings und gibt sie alphabetisch
+(nicht numerisch!) sortiert aus.
+Dabei werden mehrfach vorkommende Strings nur einmal ausgegeben.
+Jedes weitere Vorkommen wird mit einem angeh&auml;ngten Stern angezeigt.
+Stellen Sie dieses Java-Programm auf C um:</p>
+<ul>
+<li>
+Die Quelldatei soll <code>stringsort.c</code> hei&szlig;en und 
+analog zum Java-Programm die beiden Funktionen <code>main</code> und 
+<code>bubblesort</code> enthalten.</li>
+<li>
+Bestimmen Sie die Array-Gr&ouml;&szlig;e <code>n</code> wie in Aufgabe&nbsp;2
+mit der Funktion <code>atoi</code> aus dem Kommandozeilenargument
+<code>argv[1]</code>.</li>
+<li>
+Analog zum Array von String-Referenzen der Java-Vorlage brauchen Sie
+im C-Programm ein Array von String-Zeigern.
+Verwenden Sie die Bibliotheksfunktion <code>malloc</code>
+zum Reservieren des Speichers f&uuml;r das Array.</li>
+<li>
+Verwenden Sie wie in Aufgabe&nbsp;2 die Bibliotheksfunktionen
+<code>srand</code> und <code>rand</code> zum W&uuml;rfeln.
+Mit der Bibliotheksfunktion <code>sprintf</code> k&ouml;nnen Sie
+die gew&uuml;rfelten Zahlen in Strings umwandeln.
+Vor jedem Aufruf von <code>sprintf</code> m&uuml;ssen Sie mit <code>malloc</code> ein eigenes
+Speicherst&uuml;ck f&uuml;r den jeweils zu erstellenden String reservieren.
+Geben Sie als L&auml;nge <code>m</code> des Speicherst&uuml;cks die L&auml;nge
+des Strings <code>argv[1]</code> inklusive Stringendezeichen '\0' an.
+Warum ist das ein sinnvoller Wert?</li>
+<li>
+Verwenden Sie die <code>strxxx</code>-Funktionen aus der C-Standardbibliothek
+f&uuml;r Stringvergleiche und das Zusammenbauen des Ausgabestrings.
+Den Platzbedarf des Ausgabestrings k&ouml;nnen Sie mit Hilfe des R&uuml;ckgabewerts
+von <code>sprintf</code> vorab berechnen.</li>
+<li>
+Schreiben Sie wie in der Java-Vorlage das sortierte Array als einen einzigen
+String auf die Standardausgabe.</li>
+</ul>
+<p>
+Denken Sie an die Fehlerbehandlung nach den Speicherreservierungen
+sowie an die Freigabe des Speichers am Programmende.</p>
+
+<br>
+
+<h3>Test</h3>
+<p>
+Speichern Sie die Datei <a href="Makefile" download>&cudarrr;&nbsp;Makefile</a>
+<span style="color:red;font-style:italic">(ohne Endung .txt !!!)</span>
+in Ihr Arbeitverzeichnis der Aufgabe&nbsp;3 und verwenden Sie zum Testen die Befehle:</p>
+<pre>
+    javac Stringsort.java
+    java Stringsort 200
+    make stringsort
+    ./stringsort 200
+    valgrind ./stringsort 200
+    make cppcheck
+</pre>
+<p>
+Testen Sie Ihre C-Programm mit den Array-Gr&ouml;&szlig;en 0, 1, 2, 20 und 200,
+und rufen Sie es auch ohne Angabe einer Array-Gr&ouml;&szlig;e auf:</p>
+<ul>
+<li>
+Verh&auml;lt sich das C-Programm bei allen Eingaben wie das Java-Programm?</li>
+<li>
+Meldet <code>valgrind</code> Fehler?</li>
+<li>
+Meldet <code>cppcheck</code> Probleme?</li>
+</ul>
+<p>
+Bessern Sie gegebenenfalls nach.</p>
+
+<br>
+
+<h3>Optimierung des Speicherbedarfs</h3>
+<p>
+Ihr nach der obigen Anleitung erstelltes C-Programm braucht
+unn&ouml;tig viel Heapspeicher, weil es viele sehr kleine
+Speicherst&uuml;cke reserviert. Pro Speicherst&uuml;ck muss sich die
+Speicherverwaltung die L&auml;nge merken. Au&szlig;erdem liefert
+die Speicherverwaltung f&uuml;r beliebige Datentypen ausgerichtete
+Adressen, also typischerweise durch 16 teilbare Adressen.
+Das f&uuml;hrt zu einer Aufrundung des tats&auml;chlich belegten Speichers.
+Bei zum Beispiel angeforderten 4 Byte werden dadurch inklusive der
+L&auml;ngeninformation vermutlich 32 Byte belegt.
+Und nur wegen der verstreuten Speicherung der einzelnen Strings in jeweils
+eigenen Heap-St&uuml;cken wird &uuml;berhaupt das Array von String-Zeigern
+gebraucht.</p>
+<p>
+Kopieren Sie Ihre Datei <code>stringsort.c</code> nach
+<code>stringsort-optimiert.c</code> und optimieren Sie das kopierte Programm
+wie folgt:<p>
+<ul>
+<li>
+Legen Sie die gew&uuml;rfelten Strings in festem Abstand <code>m</code>
+hintereinander in einen einzigen zusammenh&auml;ngenden Speicherbereich.
+Reservieren Sie diesen Speicherbereich vor der Schleife mit <code>malloc</code>.
+Der feste Abstand <code>m</code> ist die berechnete maximale String-L&auml;nge
+inklusive Endezeichen. Lassen Sie das urspr&uuml;ngliche Array von String-Zeigern weg.
+</li>
+<li>
+Geben Sie der Funktion <code>bubblesort</code> den Typ der Bibliotheksfunktion
+<code>qsort</code> aus &lt;stdlib.h&gt; und rufen Sie <code>bubblesort</code>
+mit <code>strcmp</code> als Vergleichsfunktion auf.</li>
+<li>
+Die Funktion <code>bubblesort</code> muss nun die Speicherst&uuml;cke der
+Strings vertauschen, was mit dem Zuweisungsoperator nicht m&ouml;glich ist.
+Ersetzen Sie die Zuweisungen durch Aufrufe der Bibliotheksfunktion
+<code>memcpy</code>, um jeweils <code>m</code> Byte zu vertauschen.</li>
+</ul>
+<p><em>
+Hinweis: der zusammenh&auml;ngende Speicherbereich ist im Prinzip eine n-mal-m-Matrix von Zeichen,
+realisiert als Array von Arrays auf dem Heap. Weil beide Matrixdimensionen, 
+die Anzahl der Strings und die maximale String-L&auml;nge, erst zur Laufzeit feststehen, 
+m&uuml;ssen Sie statt mit Index-Operator mit Adressrechnung arbeiten.</em></p>
+<p>
+Testen Sie das optimierte Programm:</p>
+<pre>
+    make stringsort-optimiert
+    ./stringsort-optimiert 200
+    valgrind ./stringsort-optimiert 200
+</pre>
+<p>
+Ist das speicher-optimierte Programm schneller als das nicht optimierte?</p>
+<pre>
+    time ./stringsort 20000 &gt; /dev/null
+    time ./stringsort-optimiert 20000 &gt; /dev/null
+</pre>
+
+<br>
+
+<h3>Protokoll</h3>
+<p>
+Erstellen Sie ein Protokoll der Tests Ihrer beiden Programmvarianten.
+Gehen sie wieder so vor wie in
+<a href="../Aufgabe1/Aufgabe1.html">Aufgabe&nbsp;1</a> beschrieben.
+Nennen Sie die Protokolldatei <code>protokoll-aufgabe3.txt</code> und
+erg&auml;nzen Sie darin Ihre Antworten auf alle Fragen.</p>
+
+<br>
+
+<h3>Abgabe</h3>
+<p>
+F&uuml;hren Sie die beiden Programme und Ihre Protokolldatei vor.</p>
+<!--
+<p>
+Verpacken Sie alle Dateien Ihrer L&ouml;sung in ein Archiv:</p>
+<pre>
+    tar cvzf aufgabe3.tar.gz Makefile stringsort.c stringsort-optimiert.c protokoll-aufgabe3.txt
+</pre>
+<p>
+Laden Sie das Archiv dann in Moodle hoch (siehe dort).</p>
+/-->
+<p>
+<em>
+Hinweis:<br>
+Der Compiler <code>gcc</code> darf f&uuml;r Ihr Programm 
+keine Fehler oder Warnungen mehr ausgeben.<br>
+Ihre Programme m&uuml;ssen au&szlig;erdem ordentlich formatiert sein.
+Bessern Sie die Formatierung gegebenenfalls mit <code>astyle</code> nach:<br>
+<code>&nbsp;&nbsp;astyle -p -H --style=ansi stringsort.c stringsort-optimiert.c</code></em></p>
+
+<br>
+
+<h3>Freiwillige Zusatzaufgabe (2 Bonuspunkte)</h3>
+<p>
+Kombinieren Sie die beiden Versionen Ihres Sortierprogramms.
+Es soll wie in <code>stringsort.c</code> ein Array von String-Zeigern sortiert werden,
+aber die Strings sollen wie in <code>stringsort-optimiert.c</code> in festem Abstand
+in einem einzigen zusammenh&auml;ngenden Speicherbereich liegen.</p>
+<p>
+Ist das kombinierte Programm schneller als die beiden urspr&uuml;nglichen Programme?</p>
+
+<br>
+
+<hr>
+<address style="font-size:smaller; text-align:left; float:left;">
+<a href="http://www-home.htwg-konstanz.de/~drachen/">Prof. Dr. H. Drachenfels</a>
+<br>
+<a href="https://www.htwg-konstanz.de">Hochschule Konstanz</a> -
+<a href="https://www.htwg-konstanz.de/info/impressum">Impressum</a> -
+<a href="https://www.htwg-konstanz.de/info/datenschutzerklaerung/">Datenschutzerkl&auml;rung</a>
+</address>
+<em style="font-size:smaller; text-align:right; float:right;">
+Letzte &Auml;nderung: 20.4.2023
+</em>
+
+</body>
+</html>
+

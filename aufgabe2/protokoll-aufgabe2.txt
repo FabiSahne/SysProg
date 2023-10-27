@@ -1,0 +1,180 @@
+  fabian  ~    SysProg  aufgabe2  javac Bubblesort.java 
+  fabian  ~    SysProg  aufgabe2  java Bubblesort 10
+Bitte 10 ganze Zahlen eingeben: 234
+345
+645
+234
+234
+5
+6456
+456
+345
+234
+Sortierte Zahlenfolge: 
+5
+234
+234
+234
+234
+345
+345
+456
+645
+6456
+  fabian  ~    SysProg  aufgabe2  make clean all
+rm -f bubblesort bubblesort.o
+gcc -g -Wall -Wextra -Werror -Wvla -std=c11 -pedantic    bubblesort.c   -o bubblesort
+  fabian  ~    SysProg  aufgabe2  ./bubblesort 10
+Bitte 10 ganze Zahlen eingeben: 234
+345
+456
+567
+678
+456
+345
+5
+3456
+345345
+Sortierte Zahlenfolge: 
+5
+234
+345
+345
+456
+456
+567
+678
+3456
+345345
+  fabian  ~    SysProg  aufgabe2  valgrind ./bubblesort 10
+==52657== Memcheck, a memory error detector
+==52657== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==52657== Using Valgrind-3.21.0 and LibVEX; rerun with -h for copyright info
+==52657== Command: ./bubblesort 10
+==52657== 
+Bitte 10 ganze Zahlen eingeben: 32423
+345345
+56345
+23423
+456456
+4
+345345
+456456
+345
+345
+Sortierte Zahlenfolge: 
+4
+345
+345
+23423
+32423
+56345
+345345
+345345
+456456
+456456
+==52657== 
+==52657== HEAP SUMMARY:
+==52657==     in use at exit: 0 bytes in 0 blocks
+==52657==   total heap usage: 3 allocs, 3 frees, 2,088 bytes allocated
+==52657== 
+==52657== All heap blocks were freed -- no leaks are possible
+==52657== 
+==52657== For lists of detected and suppressed errors, rerun with: -s
+==52657== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+  fabian  ~    SysProg  aufgabe2  make cppcheck 
+cppcheck --enable=warning,style --std=c11 bubblesort.c
+Checking bubblesort.c ...
+bubblesort.c:6:26: style: Parameter 'argv' can be declared as const array [constParameter]
+int main(int argc, char *argv[])
+                         ^
+Active checkers: 106/565
+  fabian  ~    SysProg  aufgabe2  
+  fabian  ~    SysProg  aufgabe2  ./bubblesort 1000 < /dev/null | tail -1000 > out.txt
+  fabian  ~    SysProg  aufgabe2  sort -n out.txt | diff - out.txt 
+  fabian  ~    SysProg  aufgabe2  
+  fabian  ~    SysProg  aufgabe2  time java Bubblesort 1000 < /dev/null > /dev/null 
+
+real    0m0.079s
+user    0m0.087s
+sys     0m0.013s
+  fabian  ~    SysProg  aufgabe2  time ./bubblesort 1000 < /dev/null > /dev/null 
+
+real    0m0.006s
+user    0m0.006s
+sys     0m0.000s
+  fabian  ~    SysProg  aufgabe2  time java Bubblesort 10000 < /dev/null > /dev/null 
+
+real    0m0.210s
+user    0m0.302s
+sys     0m0.019s
+  fabian  ~    SysProg  aufgabe2  time ./bubblesort 10000 < /dev/null > /dev/null 
+
+real    0m0.201s
+user    0m0.199s
+sys     0m0.002s
+  fabian  ~    SysProg  aufgabe2  time java Bubblesort 100000 < /dev/null > /dev/null 
+
+real    0m19.529s
+user    0m19.622s
+sys     0m0.042s
+  fabian  ~    SysProg  aufgabe2  time ./bubblesort 100000 < /dev/null > /dev/null 
+
+real    0m33.884s
+user    0m33.773s
+sys     0m0.001s
+  fabian  ~    SysProg  aufgabe2  make "CC=gcc -g -O2" clean all
+rm -f bubblesort bubblesort.o
+gcc -g -O2 -Wall -Wextra -Werror -Wvla -std=c11 -pedantic    bubblesort.c   -o bubblesort
+  fabian  ~    SysProg  aufgabe2  time ./bubblesort 1000 < /dev/null > /dev/null 
+
+real    0m0.005s
+user    0m0.003s
+sys     0m0.001s
+  fabian  ~    SysProg  aufgabe2  time ./bubblesort 10000 < /dev/null > /dev/null 
+
+real    0m0.292s
+user    0m0.290s
+sys     0m0.001s
+  fabian  ~    SysProg  aufgabe2  time ./bubblesort 100000 < /dev/null > /dev/null 
+
+real    0m32.388s
+user    0m32.331s
+sys     0m0.002s
+  fabian  ~    SysProg  aufgabe2  
+
+
+
+# Manueller Test
+
+ Verhält sich das C-Programm bei allen Eingaben wie das Java-Programm?
+    Nein, bei zu großen Eingaben gibt das C-Programm eine Liste mit '-1' aus,
+    während das Java-Programm auf den Zufallsgenerator zurückfällt.
+
+ Funktioniert die Fehlerbehandlung bei Speicherreservierung und Einlesen?
+    Scheint so?
+
+ Meldet valgrind Fehler?
+    Nö.
+
+ Meldet cppcheck Probleme?
+    Keinen Fehler, eber eine Style-Meldung.
+
+
+# Automatisierter Test
+
+ Was gibt die obige Befehlsfolge im Terminal aus, wenn Ihr bubblesort richtig sortiert hat?
+    Nichts
+
+
+# Laufzeitmessung
+
+ Wächst die Ausführungszeit tatsächlich quadratisch mit der Array-Größe?
+    Scheint so.
+
+ Ist das Java-Programm oder das C-Programm schneller? Können Sie sich den Unterschied erklären?
+    Das C-Programm ist für kleinere Array-Größen schneller, das Java-Programm für größere.
+
+
+ Ist das optimierte Programm erkennbar schneller?
+    Minimal.

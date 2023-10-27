@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow" />
+<style type="text/css">
+body { font-family:helvetica,arial,sans-serif; line-height:1.4; }
+a { text-decoration:none; color:#059c8c; font-weight:600; }
+pre { background-color:#d9e5ec; width:90%; }
+code { font-size:larger; white-space:nowrap; }
+h1 { font-size:x-large; }
+h2 { font-size:large; }
+h3 { font-size:medium; }
+</style>
+<title>Aufgabe 6 Systemprogrammierung</title>
+</head>
+<body>
+
+<h1>Systemprogrammierung - AIN/2<br>
+<span style="font-size:smaller">Sommersemester 2023</span></h1>
+<hr>
+
+<h2>
+&Uuml;bungsaufgabe 6: Bibliotheken, Shell-Scripts, Makefiles</h2>
+<p>
+<b>Abgabe bis 22./23.6.2023</b></p>
+
+<br>
+
+<h3>Aufteilung in Verzeichnisse</h3>
+<p>
+Legen Sie ein neues Verzeichnis
+<span style="text-decoration: underline"><code>Aufgabe6</code></span> 
+mit Unterverzeichnissen 
+<span style="text-decoration: underline"><code>bin</code></span> und 
+<span style="text-decoration: underline"><code>lib</code></span> an.
+Teilen Sie darin Ihr in Aufgabe&nbsp;5 erstelltes Programm wie folgt auf:</p>
+<ul>
+<li>
+das Unterverzeichnis <code>bin</code> soll die &Uuml;bersetzungseinheit
+<code>notenspiegel</code> mit dem Hauptprogramm <code>main</code> enthalten
+</li>
+<li>
+das Unterverzeichnis <code>lib</code> soll die &Uuml;bersetzungseinheiten
+<code>benotung</code></span>, <code>fachnote</code></span> und 
+<code>fachnoten_liste</code></span> enthalten
+</li>
+</ul>
+
+<br>
+
+<h3>Statische Bibliothek</h3>
+<p>
+Schreiben Sie im Unterverzeichnis <code>lib</code> ein Shell-Script
+<span style="text-decoration: underline"><code>build-static.sh</code></span>,
+das f&uuml;r die drei &Uuml;bersetzungseinheiten Objketdateien erzeugt und
+diese  drei Objektdateien <code>benotung.o</code>, <code>fachnote.o</code> und 
+<code>fachnoten_liste.o</code> dann in einer statischen Bibliothek 
+<code>libaufgabe6.a</code> zusammenfasst.
+Das Skript soll die verwendeten Befehle auf der Konsole ausgeben und
+es soll sich beenden, sobald ein Kommando einen Fehlercode zur&uuml;ckgibt.</p>
+<p>
+Verwenden Sie im Skript den <code>g++</code> mit den empfohlenen Optionen
+zur Qualit&auml;tssicherung.</p>
+<p>
+F&uuml;hren Sie das Shell-Script aus und pr&uuml;fen Sie, ob die erzeugte
+Bibliothek alle drei &Uuml;bersetzungseinheiten enth&auml;lt:</p>
+<pre>
+  ./build-static.sh
+  ar t libaufgabe6.a
+</pre>
+<p>
+Lesen Sie nach, was die Option <code>t</code> bei <code>ar</code> bewirkt:
+<code>man&nbsp;ar</code></p>
+<p><em>
+Hinweis:
+<code>sh</code> verlangt Linux-Zeilenwechsel in Skriptdateien.
+Windows-Zeilenwechsel f&uuml;hren zu Fehlermeldungen.
+</em></p>
+
+<br>
+
+<h3>Dynamische Bibliothek</h3>
+<p>
+Schreiben Sie im Unterverzeichnis <code>lib</code> ein Shell-Script
+<span style="text-decoration: underline"><code>build-dynamic.sh</code></span>,
+das f&uuml;r die drei &Uuml;bersetzungseinheiten wie zuvor mit dem
+<code>g++</code> Objketdateien erzeugt und diese drei Objektdateien 
+<code>benotung.o</code>, <code>fachnote.o</code> und 
+<code>fachnoten_liste.o</code> dann in einer dynamischen Bibliothek 
+<code>libaufgabe6.so</code> zusammenfasst.
+Das Skript soll die verwendeten Befehle auf der Konsole ausgeben und
+es soll sich beenden, sobald ein Kommando einen Fehlercode zur&uuml;ckgibt.</p>
+<p><em>
+Hinweis:
+Auf den Laborrechnern m&uuml;ssen Sie zum Erzeugen der Objektdateien 
+den <code>g++</code> mit der Option <code>-fpic</code> aufrufen. 
+Sonst l&auml;sst sich die dynamische Bibliothek nicht bauen. 
+<code>pic</code> steht f&uuml;r <u>p</u>osition <u>i</u>ndependent <u>c</u>ode.
+Achten Sie au&szlig;erdem wie zuvor auf die empfohlenen Optionen zur
+Qualit&auml;tssicherung.</em></p>
+<p>
+F&uuml;hren Sie das Shell-Script aus und pr&uuml;fen Sie, ob die erzeugte 
+Bibliothek eine dynamische Bibliothek ist und Funktionen ihrer 
+&Uuml;bersetzungseinheiten enth&auml;lt:</p>
+<pre>
+  ./build-dynamic.sh
+  file libaufgabe6.so
+  nm -gC libaufgabe6.so | grep 'benotung\|fachnote\|fachnoten_liste'
+</pre>
+<p>
+Lesen Sie nach, was die verwendeten Linux-Kommandos tun:
+<code>man&nbsp;file</code>, <code>man&nbsp;nm</code>,
+<code>man&nbsp;grep</code></p>
+
+<br>
+
+<h3>Makefiles</h3>
+<p>
+Erstellen Sie nacheinander die folgenden Makefiles:</p>
+<ul>
+<li>
+<span style="text-decoration: underline"><code>Aufgabe6/lib/Makefile</code></span>
+<br>soll eine Bibliothek mit den &Uuml;bersetzungseinheiten
+<code>benotung</code>, <code>fachnote</code> und <code>fachnoten_liste</code> 
+erstellen, wobei der Bibliothekstyp mittels einer Variablen w&auml;hlbar ist:
+<pre>
+  make             # statische Bibliothek libaufgabe6.a erstellen
+  make LIBTYPE=a   # statische Bibliothek libaufgabe6.a erstellen
+  make LIBTYPE=so  # dynamischeBibliothek libaufgabe6.so erstellen
+</pre>
+<p>
+Das Makefile soll folgende Regeln enthalten:
+<br>&gt;&nbsp;eine Musterregel f&uuml;r das &Uuml;bersetzen der C++-Quellen
+<br>&gt;&nbsp;Pseudoziele <code>all</code> und <code>clean</code>
+<br>&gt;&nbsp;eine explizite Regel zum Erstellen der statischen Bibliothek
+<br>&gt;&nbsp;eine explizite Regel zum Erstellen der dynamischen Bibliothek
+<br>&gt;&nbsp;eine explizite Regel zum Erstellen der Datei <code>depend</code>
+</p>
+<p>
+Das Makefile soll die Abh&auml;ngigkeitsregeln f&uuml;r die beiden Objektdateien
+mit dem C++-Compiler automatisch erzeugen (<code>depend</code>-Regel) und
+per <code>include</code> einbinden.</p>
+<p>
+Das Makefile soll &uuml;berall Variablen gem&auml;&szlig; den in der Vorlesung
+besprochenen Stilregeln verwenden, d.h. alle Kommandos werden &uuml;ber 
+Variablen aufgerufen und f&uuml;r alle Dateinamen gibt es Hilfsvariablen.
+Dabei sollen alle verwendeten Variablen im Makefile explizit gesetzt werden,
+selbst wenn sie vordefiniert sind, d.h. <code>make -R</code> &nbsp; ohne 
+vordefinierte Variablen soll funktionieren.</p>
+<p>
+<em>
+Hinweise:
+<br>&gt;&nbsp;stellen Sie Ihren Editor so ein, dass er Tabulatorzeichen 
+nicht durch Leerzeichen ersetzt
+<br>&gt;&nbsp;bei C++ verwendet man statt der Variablen CC und CFLAGS 
+die Variablen CXX und CXXFLAGS
+<br>&gt;&nbsp;geben Sie bei der <code>all</code>-Regel als zu erstellendes Ziel
+<code>lib$(LIBNAME).$(LIBTYPE)</code> an</em></p>
+<p>
+Testen Sie das Makefile mit den obigen Aufrufen und pr&uuml;fen Sie die entstandenen Bibliotheken
+wie bei den Shell-Skripts. Testen Sie insbesondere, ob das Makefile bei &Auml;nderung einer 
+Quelldatei genau die erforderlichen Kommandos zur Aktualisierung der Bibliothek ausf&uuml;hren, 
+nicht mehr und nicht weniger. Die &Auml;nderung einer Datei k&ouml;nnen Sie mit dem Kommando
+<code>touch</code> vort&auml;uschen:</p>
+<pre>
+  touch Dateiname
+</pre>
+<p>
+Informieren Sie sich mit <code>man touch</code> &uuml;ber das Kommando.</p>
+</li>
+<li>
+<span style="text-decoration: underline"><code>Aufgabe6/bin/Makefile</code></span>
+<br>erstellt ein ausf&uuml;hrbares Programm <code>notenspiegel</code>,
+das mit einer der Bibliotheken aus dem Unterverzeichnis <code>lib</code> 
+gebunden ist.
+<p>
+Es sind die gleichen Stilregeln und Anforderungen wie bei
+<code>Aufgabe6/lib/Makefile</code> umzusetzen.</p>
+<p>
+Verwenden Sie im Makefile die gcc-Optionen
+<code>-I</code>, <code>-L</code> und <code>-l</code>,
+damit die Bibliothek und deren Header-Dateien gefunden werden.
+Die Option <code>-I</code> geh&ouml;rt zu den Pr&auml;prozessor-Optionen,
+f&uuml;r die die Variable <code>CPPFLAGS</code> vorgesehen ist.
+Die Option <code>-L</code> geh&ouml;rt zu den Linker-Optionen,
+f&uuml;r die die Variable <code>LDFLAGS</code> vorgesehen ist.
+</p>
+</li>
+<li>
+<span style="text-decoration: underline"><code>Aufgabe6/Makefile</code></span>
+<br>ruft erst das <code>Makefile</code> im Unterverzeichnis <code>lib</code>
+und dann das <code>Makefile</code> im Unterverzeichnis <code>bin</code> 
+rekursiv auf. In den Vorlesungsunterlagen finden Sie eine ausformulierte
+Vorlage f&uuml;r das rekursive Makefile.
+<p>
+Rufen Sie zum Testen der Make-Rekursion im Verzeichnis <code>Aufgabe6</code>
+folgende Befehle auf und pr&uuml;fen Sie die Ergebnisse:</p>
+<pre>
+  make clean
+  make -R all
+  bin/notenspiegel
+  make -R clean
+  make -R LIBTYPE=so
+  ldd bin/notenspiegel
+  LD_LIBRARY_PATH=lib ldd bin/notenspiegel
+  LD_LIBRARY_PATH=lib bin/notenspiegel
+</pre>
+<p>
+Was hat es mit der Umgebungsvariablen <code>LD_LIBRARY_PATH</code> auf sich?
+Lesen Sie dazu Folie 4-25.
+<p>
+Was k&ouml;nnte man in Ihren Makefiles alles weglassen, wenn man auf die
+<code>make</code>-Option <code>-R</code> verzichten w&uuml;rde?
+</p>
+</ul>
+
+<br>
+
+<h3>Abgabe</h3>
+<p>
+F&uuml;hren Sie Ihre Shell-Scripts und Makefiles vor.</p>
+<!--
+<p>
+Verpacken Sie Ihre gesamte L&ouml;sung in ein Archiv:</p>
+<pre>
+    tar cvzf aufgabe6.tar.gz Makefile bin lib
+</pre>
+<p>
+Laden Sie das Archiv dann in Moodle hoch (siehe dort).</p>
+-->
+
+<br>
+
+<h3>Freiwillige Zusatzaufgabe (1 Bonuspunkt)</h3>
+<ul>
+<li>
+Schreiben Sie ein Makefile <code>aufgabe6/bonus.mak</code>, das Ihre 
+L&ouml;sung von Aufgabe&nbsp;6 in eine Datei <code>aufgabe6.tar.gz</code>
+verpackt. Halten Sie alle besprochenen Stilregeln f&uuml;r ein gutes 
+Makefile ein. Das Makefile muss mit der Option <code>-R</code> ausf&uuml;hrbar
+sein.
+</li>
+</ul>
+
+<br>
+
+<hr>
+<address style="font-size:smaller; text-align:left; float:left;">
+<a href="http://www-home.htwg-konstanz.de/~drachen/">Prof. Dr. H. Drachenfels</a>
+<br>
+<a href="https://www.htwg-konstanz.de">Hochschule Konstanz</a> -
+<a href="https://www.htwg-konstanz.de/info/impressum">Impressum</a> -
+<a href="https://www.htwg-konstanz.de/info/datenschutzerklaerung/">Datenschutzerkl&auml;rung</a>
+</address>
+<em style="font-size:smaller; text-align:right; float:right;">
+Letzte &Auml;nderung: 2.3.2023
+</em>
+
+</body>
+</html>
+
