@@ -6,20 +6,26 @@
 
 
 
-void bubblesort(char** a, int n)
+void bubblesort(void *ptr, size_t count, size_t size, int (*cmp)(const void*, const void*))
 {
-    for (int i = n; i > 1; --i)
+    void* tmp = malloc(size);
+    for (int i = count; i > 1; --i)
     {
         for (int j = 0; j < i - 1; ++j)
         {
-            if (strcmp(a[j], a[j + 1]) > 0)
+
+            void *lhs = ((char*) ptr) + j * size;
+            void *rhs = ((char*) ptr) + (j + 1) * size;
+
+            if (cmp(lhs, rhs) > 0)
             {
-                char* tmp = a[j + 1];
-                a[j + 1] = a[j];
-                a[j] = tmp;
+                memcpy(tmp, rhs, size);
+                memcpy(rhs, lhs, size);
+                memcpy(lhs, tmp, size);
             }
         }
     }
+    free(tmp);
 }
 
 int main(int argc, char *argv[])
@@ -34,13 +40,14 @@ int main(int argc, char *argv[])
     }
 
     const int n = atoi(argv[1]);
+    const int m = strlen(argv[1]) + 1;
     if (n < 1)
     {
         perror("Anzahl muss mindestens 1 sein");
         return EINVAL;
     }
 
-    char **a = (char**)malloc(sizeof(char*)*n);
+    char *a = (char*)malloc(sizeof(char) * n * m);
     if (a == NULL)
     {
         return ENOMEM;
@@ -48,49 +55,40 @@ int main(int argc, char *argv[])
 
     printf("Unsortiertes Array:\n");
 
-    int size = 0;
     for (int i = 0; i < n; ++i)
     {
         int r = rand() % (n);
-        a[i] = (char*)malloc(sizeof(char) * (strlen(argv[1]) + 1));
-        if (a[i] == NULL)
-        {
-            return ENOMEM;
-        }
-        size += sprintf(a[i], "%d", r);
-        printf("%s ", a[i]);
+        sprintf(a + i * m, "%d", r);
+        printf("%s ", a + i * m);
     }
-    size *= 2;
+    //size *= 2;
     printf("\n");
 
 
-    bubblesort(a, n);
+    bubblesort(a, n, m, (int (*)(const void *, const void *))strcmp);
 
     printf("Sortiertes Array:\n");
-    char* s = (char*)malloc((sizeof(char) * size) + 1);
+    char* s = (char*)malloc((sizeof(char) * n * m));
     if (s == NULL)
     {
         return ENOMEM;
     }
-    strcpy(s, a[0]);
+    strcpy(s, a);
     for (int i = 1; i < n; ++i)
     {
-        if (strcmp(a[i], a[i - 1]) == 0)
+        if (strcmp(a + i * m, a + (i - 1) * m) == 0)
         {
             strcat(s, "*");
         }
         else
         {
             strcat(s, " ");
-            strcat(s, a[i]);
+            strcat(s, a + i * m);
         }
     }
     printf("%s\n", s);
 
-    for (int i = 0; i < n; ++i)
-    {
-        free(a[i]);
-    }
+
     free(a);
     free(s);
     return 0;
