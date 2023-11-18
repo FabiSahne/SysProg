@@ -14,12 +14,12 @@ enum filetype
 
 struct fileinfo
 {
+    char* name;
     enum filetype type;
-
     union
     {
         uint8_t size;
-        fileinfo* head;
+        fileinfo* next;
     };
 
 };
