@@ -3,12 +3,7 @@ listfiles.c (regular, 1227 Byte)
 /dev/tty (other)
 
 listfiles-example-dir:
-e-dir:
--subdir (directory)
+example-subdir (directory)
 
-listfiles-example-dir/e-dir:
-e-dir:
--subdir (directory)
-
-listfiles-example-dir/:
+listfiles-example-dir/example-subdir:
 example.txt (regular, 18 Byte)

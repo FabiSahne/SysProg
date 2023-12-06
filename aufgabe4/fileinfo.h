@@ -1,6 +1,8 @@
 //#include <errno.h>
 #ifndef FILEINFO_H
 #define FILEFINF_H
+#include <stddef.h>
+#include <linux/limits.h>
 #endif
 #include <stdint.h>
 
@@ -14,12 +16,13 @@ enum filetype
 
 struct fileinfo
 {
-    char* name;
+    char name[NAME_MAX + 1];
     enum filetype type;
+    fileinfo* next;
     union
     {
-        uint8_t size;
-        fileinfo* next;
+        size_t size;
+        fileinfo* list;
     };
 
 };
