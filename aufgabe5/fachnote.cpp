@@ -1,3 +1,11 @@
-//
-// Created by fabian on 12/14/23.
-//
+#include "fachnote.h"
+#include "benotung.h"
+#include <stdexcept>
+
+fachnote::fachnote(const std::string& f, const benotung &n) : fach(f), note(n)
+{
+    if (f.empty())
+    {
+        throw std::invalid_argument("unzulässiges Fach");
+    }
+}

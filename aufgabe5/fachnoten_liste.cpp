@@ -1,43 +1,57 @@
 #include "fachnoten_liste.h"
+#include "fachnote.h"
 
-//----------------------------------------- Member-Funktionen intlist::iterator
-fachnotenliste::iterator::iterator(element *e)
-: current(e)
+class fachnoten_liste::element final {
+    element *next;
+    fachnote *n;
+
+    element(element* e, fachnote* m) : next(e), n(m)
+    { }
+
+    friend class fachnoten_liste;
+    friend class fachnoten_liste::iterator;
+};
+
+fachnoten_liste::iterator::iterator(element* e) : current(e)
 { }
 
-bool fachnotenliste::iterator::operator!=(const iterator& i) const
-{
+bool fachnoten_liste::iterator::operator!=(const iterator& i) const {
     return this->current != i.current;
 }
 
-int& fachnotenliste::iterator::operator*() const
-{
+fachnote* fachnoten_liste::iterator::operator*() const {
     return this->current->n;
 }
 
-fachnotenliste::iterator& fachnotenliste::iterator::operator++()
-{
-    this->current = this->current->next.get();
+fachnoten_liste::iterator& fachnoten_liste::iterator::operator++() {
+    this->current = this->current->next;
     return *this;
 }
 
-//--------------------------------------------------- Member-Funktionen intlist
-fachnotenliste::fachnotenliste()
-: head(nullptr)
+fachnoten_liste::fachnoten_liste(void (*f)(fachnote* n))
+        : head(nullptr), function(f)
 { }
 
-fachnotenliste& fachnotenliste::insert(int n)
-{
-    this->head.reset(new element(this->head.release(), n));
+fachnoten_liste::~fachnoten_liste() {
+    element *e = this->head;
+    while (e != nullptr)
+    {
+        element *x = e;
+        function(e->n);
+        e = e->next;
+        delete x;
+    }
+}
+
+fachnoten_liste& fachnoten_liste::insert(fachnote* n) {
+    this->head = new element(this->head, n);
     return *this;
 }
 
-fachnotenliste::iterator fachnotenliste::begin()
-{
-    return fachnotenliste::iterator(this->head.get());
+fachnoten_liste::iterator fachnoten_liste::begin() {
+    return fachnoten_liste::iterator(this->head);
 }
 
-fachnotenliste::iterator fachnotenliste::end()
-{
-    return fachnotenliste::iterator(nullptr);
+fachnoten_liste::iterator fachnoten_liste::end() {
+    return fachnoten_liste::iterator(nullptr);
 }

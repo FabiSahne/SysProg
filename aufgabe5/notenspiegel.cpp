@@ -22,7 +22,7 @@ std::ostream& operator<<(std::ostream& os, const benotung& n);
 void delete_fachnote(fachnote *);
 }
 
-int main(void)
+int main()
 {
     fachnoten_liste liste(delete_fachnote); // leere Liste
 

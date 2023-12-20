@@ -1,24 +1,17 @@
-#include "benotung.h";
+#ifndef FACHNOTE_H
+#define FACHNOTE_H
+
+#include <string>
+#include "benotung.h"
 
 class fachnote
 {
-private:
-    /* data */
+    fachnote(const fachnote&) = delete;
+    fachnote& operator=(const fachnote&) = delete;
 public:
     const std::string fach;
     const benotung note;
     fachnote(const std::string&, const benotung&);
 };
 
-fachnote::fachnote(const std::string& f, const benotung& n)
-{
-    if (f.length() > 0)
-    {
-    fach = f;
-    note = n;
-    }
-    else
-    {
-
-    }
-}
+#endif
