@@ -4,6 +4,7 @@
 #include "fachnote.h"
 
 class fachnoten_liste final {
+public:
     fachnoten_liste(fachnoten_liste&) = delete;
     fachnoten_liste& operator=(fachnoten_liste&) = delete;
     fachnoten_liste(fachnoten_liste&&) = delete;
@@ -20,7 +21,6 @@ public:
     fachnoten_liste& insert(fachnote*);
 
     class iterator final {
-    private:
         element *current;
         explicit iterator(element*);
     public:

@@ -3,7 +3,6 @@
 
 class benotung
 {
-private:
     int note;
 
 public:
