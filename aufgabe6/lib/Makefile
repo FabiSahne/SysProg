@@ -2,7 +2,7 @@
 # Kommando Variablen
 
 CC = g++
-CFLAGS = -Wall -Wextra -Werror -pedantic
+CFLAGS = -Wall -Wextra -Werror -pedantic -fPIC   
 
 # Hilfsvariablen
 SOURCES = benotung.cpp fachnote.cpp fachnoten_liste.cpp
@@ -18,7 +18,7 @@ endif
 
 # Musterregel
 %.o: %.cpp
-	$(CC) $(CFLAGS) -c -fPIC $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 # Pseudoziele
 .PHONY: all clean
