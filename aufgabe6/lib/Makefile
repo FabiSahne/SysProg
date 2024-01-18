@@ -26,7 +26,7 @@ endif
 all: $(LIBRARY)
 
 clean:
-	rm -f $(OBJECTS) $(LIBNAME).a $(LIBNAME).so
+	rm -f $(OBJECTS) $(LIBNAME).a $(LIBNAME).so depend
 
 # Depend
 depend: $(SOURCES) $(HEADERS)
